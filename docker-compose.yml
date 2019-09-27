@@ -1,5 +1,5 @@
 sut:
-  image: node:8.0-alpine
+  image: node:${NODE_IMAGE}
   command: sh -c 'npm install && npm test'
   volumes:
     - .:/app
