@@ -103,12 +103,12 @@ describe('Client', () => {
     describe('general', () => {
       it('should throw an error if timeout is reached', async () => {
         try {
-          await new Client(_.defaults({ timeout: 0.1 }, config.bitcoin)).listAccounts();
+          await new Client(_.defaults({ timeout: 1 }, config.bitcoin)).listUnspent();
 
           should.fail();
         } catch (e) {
           e.should.be.an.instanceOf(Error);
-          e.code.should.match(/(ETIMEDOUT|ESOCKETTIMEDOUT)/);
+          e.message.should.match(/(ETIMEDOUT|ESOCKETTIMEDOUT)/);
         }
       });
 
