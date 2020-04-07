@@ -65,7 +65,8 @@ class Client {
     timeout = 30000,
     username,
     version,
-    wallet
+    wallet,
+    useWalletURL = false
   } = {}) {
     if (!_lodash.default.has(networks, network)) {
       throw new Error(`Invalid network name "${network}"`, {
@@ -88,7 +89,8 @@ class Client {
       strict: _lodash.default.get(ssl, 'strict', _lodash.default.get(ssl, 'enabled', ssl))
     };
     this.timeout = timeout;
-    this.wallet = wallet; // Version handling.
+    this.wallet = wallet;
+    this.useWalletURL = useWalletURL; // Version handling.
 
     if (version) {
       // Capture X.Y.Z when X.Y.Z.A is passed to support oddly formatted Bitcoin Core
@@ -169,7 +171,7 @@ class Client {
     return this.parser.rpc((await this.request.postAsync({
       auth: _lodash.default.pickBy(this.auth, _lodash.default.identity),
       body: JSON.stringify(body),
-      uri: `${multiwallet && this.wallet ? `/wallet/${this.wallet}` : '/'}`
+      uri: `${this.useWalletURL || multiwallet && this.wallet ? `/wallet/${this.wallet}` : '/'}`
     })));
   }
   /**
